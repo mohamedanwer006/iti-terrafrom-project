@@ -22,4 +22,4 @@
 
 test ssh to bastion
 
-![alt](./assets/)
+![alt](./assets/test.png)
