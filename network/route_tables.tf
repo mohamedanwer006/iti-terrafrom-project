@@ -1,14 +1,3 @@
-# ------------------- create  igw -------------------------
-
-resource "aws_internet_gateway" "iti_igw" {
-  vpc_id = aws_vpc.iti_vpc.id
-
-  tags = {
-    Name = "iti_igw"
-  }
-}
-
-
 # ----------------- create routes ---------------
 
 resource "aws_default_route_table" "public" {
@@ -59,23 +48,6 @@ resource "aws_route_table_association" "private" {
 resource "aws_route_table_association" "private2" {
   subnet_id      = aws_subnet.iti_private_subnet2.id
   route_table_id = aws_route_table.private.id
-}
-
-resource "aws_eip" "nat_ip" {
-  vpc = true
-
-  tags = {
-    Name = "iti-eip"
-  }
-}
-
-resource "aws_nat_gateway" "iti-ngw" {
-  allocation_id = aws_eip.nat_ip.id
-  subnet_id     = aws_subnet.iti_public_subnet1.id
-
-  tags = {
-    Name = "iti-nat-gw"
-  }
 }
 
 resource "aws_route" "private_nat_gateway" {

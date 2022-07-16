@@ -3,7 +3,7 @@
 resource "aws_security_group" "iti_sg" {
   name        = "iti-project-sg"
   description = "security group for bastion server"
-  vpc_id      = aws_vpc.iti_vpc.id
+  vpc_id      = module.network.vpc_id
   tags = {
     Name      = "iti_sg_22"
     createdBy = "terraform : mohamedanwer006"
@@ -31,7 +31,7 @@ resource "aws_security_group_rule" "sg_inbound_allow_ssh" {
 resource "aws_security_group" "iti_sg2" {
   name        = "iti-project-sg2"
   description = "security group open port 3000"
-  vpc_id      = aws_vpc.iti_vpc.id
+  vpc_id      = module.network.vpc_id
   tags = {
     Name      = "iti_sg_3000"
     createdBy = "terraform : mohamedanwer006"
@@ -41,13 +41,13 @@ resource "aws_security_group" "iti_sg2" {
 
 #------------------------ Inbound traffic ---------------------
 
-# allow http traffic at port 8080
+# allow traffic at port 3030
 resource "aws_security_group_rule" "sg_inbound_allow_http" {
   type              = "ingress"
   from_port         = 3000
   to_port           = 3000
   protocol          = "tcp"
-  cidr_blocks       = ["10.0.0.0/16"] # allows ssh from vpc cider 
+  cidr_blocks       = ["10.0.0.0/16"] # allows from vpc cider 
   security_group_id = aws_security_group.iti_sg2.id
 
 }

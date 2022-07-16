@@ -1,24 +1,13 @@
 
-#-------------------- create vpc ---------------------------
-
-resource "aws_vpc" "iti_vpc" {
-
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = true
-
-  tags = {
-    "Name" = "iti-vpc"
-  }
-}
 
 # ----------------- create public subnet  az1 ---------------
 
 resource "aws_subnet" "iti_public_subnet1" {
   vpc_id            = aws_vpc.iti_vpc.id
-  cidr_block        = "10.0.0.0/24"
-  availability_zone = "us-east-1a"
+  cidr_block        = var.iti_public_subnet1_cidr
+  availability_zone = "${var.region}a"
   tags = {
-    Name = "Public subnet"
+    Name = "iti_public_subnet1"
   }
 }
 
@@ -27,10 +16,10 @@ resource "aws_subnet" "iti_public_subnet1" {
 
 resource "aws_subnet" "iti_public_subnet2" {
   vpc_id            = aws_vpc.iti_vpc.id
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1b"
+  cidr_block        = var.iti_public_subnet2_cidr
+  availability_zone = "${var.region}b"
   tags = {
-    Name = "Public subnet"
+    Name = "iti_public_subnet2"
   }
 }
 
@@ -38,10 +27,10 @@ resource "aws_subnet" "iti_public_subnet2" {
 
 resource "aws_subnet" "iti_private_subnet1" {
   vpc_id            = aws_vpc.iti_vpc.id
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1a"
+  cidr_block        = var.iti_private_subnet1_cidr
+  availability_zone = "${var.region}a"
   tags = {
-    Name = "Public subnet"
+    Name = "iti_private_subnet1"
   }
 }
 
@@ -49,9 +38,9 @@ resource "aws_subnet" "iti_private_subnet1" {
 
 resource "aws_subnet" "iti_private_subnet2" {
   vpc_id            = aws_vpc.iti_vpc.id
-  cidr_block        = "10.0.3.0/24"
-  availability_zone = "us-east-1b"
+  cidr_block        = var.iti_private_subnet2_cidr
+  availability_zone = "${var.region}b"
   tags = {
-    Name = "Public subnet"
+    Name = "iti_private_subnet2"
   }
 }
