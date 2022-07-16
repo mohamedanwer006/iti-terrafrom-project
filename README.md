@@ -40,3 +40,7 @@ test ssh to bastion
 10.  create lambda function to send email
 11. create trigger to detect changes in state file and send the email
 
+
+### test email 
+
+![alt](./assets/email.png)
