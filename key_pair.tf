@@ -16,11 +16,11 @@ resource "aws_key_pair" "iti_ssh_key" {
 }
 
 resource "local_file" "ssh_key" {
-  filename = "pk.pem"
+  filename = "ansible/pk.pem"
   content = tls_private_key.iti_key.private_key_pem
   provisioner "local-exec" {
     interpreter = ["bash", "-c"]
-    command = "chmod 400 pk.pem"
+    command = "chmod 400 ansible/pk.pem"
   }
 }
 

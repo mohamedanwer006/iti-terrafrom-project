@@ -6,9 +6,9 @@ ansible_user=ubuntu
 
 ansible_port = 22
 
-private_key_file=/home/mohamed/Downloads/jenkins-key.pem
+private_key_file=../pk.pem
 
-ansible_ssh_common_args= '-o ProxyCommand="ssh -i /home/mohamed/Downloads/jenkins-key.pem -W %h:%p -q ubuntu@54.90.227.189"'
+ansible_ssh_common_args= '-o ProxyCommand="ssh -i ../pk.pem -W %h:%p -q ubuntu@54.90.227.189"'
 
 
 
