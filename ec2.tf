@@ -78,7 +78,7 @@ resource "null_resource" "run_ansible" {
     
     interpreter = ["bash", "-c"]
     command     = <<EOT
-          ansible-playbook --private-key ./pk.pem plays/app_vm.yaml
+          ansible-playbook --private-key ./pk.pem ./ansible/plays/app_vm.yaml
      EOT
   }
 
