@@ -61,9 +61,9 @@ resource "null_resource" "ansible_inventory" {
 
               ansible_port = 22
 
-              private_key_file=./${aws_key_pair.iti_ssh_key.iti_lab_key}.pem
+              private_key_file=./pk.pem
 
-              ansible_ssh_common_args= '-o ProxyCommand="ssh -i ./${aws_key_pair.iti_ssh_key.iti_lab_key}.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
+              ansible_ssh_common_args= '-o ProxyCommand="ssh -i ./pk.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
           " > ./ansible/inventory
      EOT
   }
@@ -78,7 +78,7 @@ resource "null_resource" "run_ansible" {
     
     interpreter = ["bash", "-c"]
     command     = <<EOT
-          ansible-playbook --private-key ./${aws_key_pair.iti_ssh_key.iti_lab_key}.pem plays/app_vm.yaml
+          ansible-playbook --private-key ./pk.pem plays/app_vm.yaml
      EOT
   }
 

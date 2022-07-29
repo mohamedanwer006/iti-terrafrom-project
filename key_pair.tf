@@ -16,11 +16,11 @@ resource "aws_key_pair" "iti_ssh_key" {
 }
 
 resource "local_file" "ssh_key" {
-  filename = "${aws_key_pair.iti_ssh_key.iti_lab_key}.pem"
+  filename = "pk.pem"
   content = tls_private_key.iti_key.private_key_pem
   provisioner "local-exec" {
     interpreter = ["bash", "-c"]
-    command = "chmod 400 ${aws_key_pair.iti_ssh_key.iti_lab_key}.pem"
+    command = "chmod 400 pk.pem"
   }
 }
 
