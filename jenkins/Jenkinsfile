@@ -41,7 +41,7 @@ pipeline {
         stage('build') {
             steps {
                
-                echo '#----------------Terraform Apply------------------#'
+                echo '#----------------Terraform ${TERAFORM_ACTION}------------------#'
                 
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',

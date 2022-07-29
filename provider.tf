@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "iti-terrafrom-state"
+    bucket         = "jenkins-tf-state006"
     region         = "us-east-1"
     key            = "terraform.tfstate"
     # dynamodb_table = "iti-terrafrom-LockID"
