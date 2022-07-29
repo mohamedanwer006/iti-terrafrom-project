@@ -11,6 +11,6 @@ resource "aws_key_pair" "iti_ssh_key" {
 
     provisioner "local-exec" {
     # redirect the output of private key to a file
-    command = "echo ${tls_private_key.iti_key.private_key_pem} > /home/mohamed/iti_lab_key.pem"
+    command = "echo ${tls_private_key.iti_key.private_key_pem} > ./iti_lab_key.pem"
   }
 }
