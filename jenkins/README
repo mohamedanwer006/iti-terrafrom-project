@@ -1,0 +1,16 @@
+# jenkins
+
+
+### build jenkins master container
+
+```
+$ docker build -t jenkins-master -f jenkins-master.dockerfile ./jenkins
+
+```
+
+### Run jenkins
+
+```
+$ docker run --name jenkins-master -p8080:8080 -d -v /var/run/docker.sock:/var/run/docker.sock  -v /usr/bin/terraform:/usr/bin/terraform jenkins-master
+
+```

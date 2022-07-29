@@ -1,4 +1,4 @@
-#---------------------- create rds instance -----------------------
+# ---------------------- create rds instance -----------------------
 
 
 resource "aws_db_instance" "iti_mysql_instance" {
@@ -12,10 +12,11 @@ resource "aws_db_instance" "iti_mysql_instance" {
   parameter_group_name = var.parameter_group_name
   availability_zone = "${var.region}a"
   skip_final_snapshot  = true
+
 }
 
 
-#---------------------- create elasticache instance -----------------------
+# ---------------------- create elasticache instance ----------------------
 
 # resource "aws_elasticache_cluster" "iti_elasticache" {
 #   cluster_id            = var.name

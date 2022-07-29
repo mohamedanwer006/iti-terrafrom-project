@@ -3,7 +3,7 @@ terraform {
     bucket         = "iti-terrafrom-state"
     region         = "us-east-1"
     key            = "terraform.tfstate"
-    dynamodb_table = "iti-terrafrom-LockID"
+    # dynamodb_table = "iti-terrafrom-LockID"
   }
   required_providers {
     aws = "~> 3.0"
@@ -12,7 +12,6 @@ terraform {
 
 provider "aws" {
   region                  = var.region
-  shared_credentials_file = "~/.aws/credentials"
-  profile                 = "mohamedanwer006"
-
+  # use env variables for credentials 
+  # Add to jenkins credentials
 }

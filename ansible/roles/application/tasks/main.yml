@@ -1,0 +1,53 @@
+---
+
+- name: apt update
+  apt:
+    update_cache: yes
+
+
+- name: install jdk
+  apt:
+    name: openjdk-11-jdk
+
+- name: ensure repository key is installed
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name:  docker registry 
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/ubuntu bionic stable"
+    state: present
+
+- name: docker and dependencies are installed
+  apt:
+    name: docker-ce
+    update_cache: yes
+
+- name: Add the user 'ubuntu' with a bash shell, appending the group 'docker'to the user's groups
+  user:
+    name: ubuntu
+    groups: docker
+    append: yes
+
+- name: create jenkins dir
+  file:
+    path: /home/ubuntu/jenkins_home
+    state: directory
+    mode: "0777"
+
+- name: create bin dir
+  file:
+    path: /home/ubuntu/bin
+    state: directory
+    mode: "0777"
+
+- name: copy agent.jar to jenkins_home
+  copy:
+    src: ./files/agent.jar
+    dest: /home/ubuntu/bin/agent.jar
+    owner: ubuntu
+    group: ubuntu
+    mode: "0777"
+
+

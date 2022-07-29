@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('chectout') {
+            steps {
+                echo '#----------------Checkout SCM------------------#'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/test.git'
+            }
+        }
+
+        stage('initialize') {
+            steps {
+                echo '#----------------Terraform Initialization------------------#'
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws_credentials',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
+
+                        sh 'terraform init'
+                    }
+            }
+        }
+        
+         stage('validate') {
+            steps {
+                echo '#----------------Terraform Validate------------------#'
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws_credentials',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
+
+                        sh 'terraform validate'
+                    }
+            }
+        }
+
+        stage('build') {
+            steps {
+               
+                echo '#----------------Terraform Apply------------------#'
+                
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws_credentials',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
+
+                        sh 'terraform ${TERAFORM_ACTION} --auto-approve'
+                        
+                    }
+            }
+        }
+    }
+}

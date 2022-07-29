@@ -1,0 +1,6 @@
+- hosts: application
+  user: ubuntu
+  gather_facts: no
+  roles:
+  - role: roles/application
+
