@@ -7,6 +7,8 @@ pipeline {
             steps {
                 echo '#----------------Checkout SCM------------------#'
                 git branch: 'main', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/test.git'
+
+                sh 'ls'
             }
         }
 
