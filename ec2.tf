@@ -47,7 +47,7 @@ resource "time_sleep" "wait" {
 }
 
 
-resource "null_resource" "user_data_status_check" {
+resource "null_resource" "ansible_inventory" {
   provisioner "local-exec" {
     
     interpreter = ["bash", "-c"]
@@ -72,6 +72,22 @@ depends_on = [
   time_sleep.wait
 ]
 }
+
+resource "null_resource" "run_ansible" {
+  provisioner "local-exec" {
+    
+    interpreter = ["bash", "-c"]
+    command     = <<EOT
+          ansible-playbook --private-key ./${aws_key_pair.iti_ssh_key.iti_lab_key}.pem plays/app_vm.yaml
+     EOT
+  }
+
+depends_on = [
+  null_resource.ansible_inventory
+]
+}
+
+
 
 
 
