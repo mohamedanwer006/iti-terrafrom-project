@@ -21,7 +21,7 @@ resource "aws_instance" "bastion" {
     # print the bastion public ip address
     command = "echo ${self.public_ip}"
   }
-  
+
 }
 
 resource "aws_instance" "application_instance" {
@@ -37,10 +37,41 @@ resource "aws_instance" "application_instance" {
   root_block_device {
     delete_on_termination = true
   }
+  
 }
 
 
+resource "time_sleep" "wait" {
+  create_duration = "180s"
+   depends_on = [aws_instance.bastion, aws_instance.application_instance, aws_key_pair.iti_ssh_key]
+}
 
+
+resource "null_resource" "user_data_status_check" {
+  provisioner "local-exec" {
+    
+    interpreter = ["bash", "-c"]
+    command     = <<EOT
+          echo "
+              [application]
+              ${aws_instance.application_instance.private_ip}
+
+              [application:vars]
+              ansible_user=ubuntu
+
+              ansible_port = 22
+
+              private_key_file=./${aws_key_pair.iti_ssh_key.iti_lab_key}.pem
+
+              ansible_ssh_common_args= '-o ProxyCommand="ssh -i ./${aws_key_pair.iti_ssh_key.iti_lab_key}.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
+          " > ./ansible/inventory
+     EOT
+  }
+
+depends_on = [
+  time_sleep.wait
+]
+}
 
 
 
