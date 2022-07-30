@@ -73,19 +73,19 @@ depends_on = [
 ]
 }
 
-resource "null_resource" "run_ansible" {
-  provisioner "local-exec" {
+# resource "null_resource" "run_ansible" {
+#   provisioner "local-exec" {
     
-    interpreter = ["bash", "-c"]
-    command     = <<EOT
-          cd ansible && ansible-playbook --private-key ./pk.pem plays/app_vm.yaml -vvv
-     EOT
-  }
+#     interpreter = ["bash", "-c"]
+#     command     = <<EOT
+#           cd ansible && ansible-playbook --private-key ./pk.pem plays/app_vm.yaml -vvv
+#      EOT
+#   }
 
-depends_on = [
-  null_resource.ansible_inventory
-]
-}
+# depends_on = [
+#   null_resource.ansible_inventory
+# ]
+# }
 
 
 
