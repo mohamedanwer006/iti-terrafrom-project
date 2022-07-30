@@ -56,4 +56,5 @@ resource "aws_security_group" "elastic_sg" {
   name        = "iti-sg"
   description = "Security group for iti"
   vpc_id      = "${module.network.vpc_id}"
+  
 } 
