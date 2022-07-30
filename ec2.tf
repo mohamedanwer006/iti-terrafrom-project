@@ -57,13 +57,13 @@ resource "null_resource" "ansible_inventory" {
               ${aws_instance.application_instance.private_ip}
 
               [application:vars]
-              ansible_user=ubuntu
+              ansible_user = ubuntu
 
               ansible_port = 22
 
-              private_key_file=./pk.pem
+              private_key_file = /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem
 
-              ansible_ssh_common_args= '-o ProxyCommand="ssh -i ./pk.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
+              ansible_ssh_common_args = '-o ProxyCommand="ssh -i /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
           " > ./ansible/inventory
      EOT
   }
