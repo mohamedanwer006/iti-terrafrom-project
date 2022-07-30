@@ -23,7 +23,7 @@ resource "aws_lb" "lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id ]
-  subnets            = [module.network.iti_public_subnet1_id,module.network.iti_private_subnet1_id]
+  subnets            = [module.network.iti_public_subnet1_id,]
 }
 
 
