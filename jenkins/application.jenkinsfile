@@ -9,7 +9,7 @@ pipeline {
             steps {
                 echo '#----------------Checkout SCM------------------#'
                 git branch: 'rds_redis', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/jenkins_nodejs_example.git'
-                
+                sh 'ls'
             }
         }
 

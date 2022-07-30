@@ -13,7 +13,7 @@ resource "aws_lb_target_group" "tg" {
 
 resource "aws_alb_target_group_attachment" "tgattachment" {
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = aws_instance.instance.application_instance.id
+  target_id        = aws_instance.application_instance.id
 }
 
 # ----------------------- Application Load balancer ----------------------------
@@ -88,7 +88,7 @@ resource "aws_security_group" "lb_sg" {
 
   name        = "CustomSG"
   description = "Allow TLS inbound traffic"
-  vpc_id      = aws_vpc.custom_vpc.id
+  vpc_id      = module.network.vpc_id
   egress = [
     {
       description      = "for all outgoing traffics"
