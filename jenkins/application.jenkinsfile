@@ -1,0 +1,46 @@
+pipeline {
+     agent {
+        label 'deploy'
+    }
+
+    stages {
+
+        stage('Chectout') {
+            steps {
+                echo '#----------------Checkout SCM------------------#'
+                git branch: 'rds_redis', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/jenkins_nodejs_example.git'
+                
+            }
+        }
+
+        stage('Docker-Build') {
+            steps {
+                 echo '#----------------Build Image------------------#'
+                sh 'docker build -t mohameddev006/iti-node-app:latest -f dockerfile .'
+
+            }
+        }
+        
+         stage('Push-Artifact') {
+            steps {
+                echo '#----------------Login to Docker hub and push image------------------#'
+                           withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                     sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                     sh "docker push mohameddev006/iti-node-app:latest"
+                     
+                }
+            }
+        }
+
+        stage('deploy') {
+            steps {
+               
+                echo '#----------------Deploy application------------------#'
+                sh "docker run -d -eREDIS_HOSTNAME=cluster-example.lhrqtl.0001.use1.cache.amazonaws.com -eREDIS_PORT=6379 -eRDS_HOSTNAME=terraform-20220729223326775900000001.cwcbyztycuua.us-east-1.rds.amazonaws.com -eRDS_USERNAME=user1 -eRDS_PASSWORD=password -eRDS_PORT=3306 -p 3000:3000 mohameddev006/iti-node-app:latest"
+   
+            }
+        }
+    }
+}
+
+
