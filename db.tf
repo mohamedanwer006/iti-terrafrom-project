@@ -48,4 +48,12 @@ resource "aws_elasticache_cluster" "iti_elasticache_cluster" {
   engine_version       = "3.2.10"
   port                 = 6379
   subnet_group_name    = aws_elasticache_subnet_group.elasticache_subnet_group.name
+  security_group_ids = [aws_security_group.elastic_sg.id]
 }
+
+# create security group for elasticache
+resource "aws_security_group" "elastic_sg" {
+  name        = "iti-sg"
+  description = "Security group for iti"
+  vpc_id      = "${module.network.vpc_id}"
+} 
