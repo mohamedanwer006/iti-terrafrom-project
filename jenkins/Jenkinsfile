@@ -1,5 +1,12 @@
 pipeline {
     agent any
+    
+    properties([
+        buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '3')),
+        disableConcurrentBuilds(), 
+        disableResume(),
+        parameters([choice(choices: ['apply', 'destroy'],name: 'TERAFORM_ACTION')])]
+    )
 
     stages {
 
