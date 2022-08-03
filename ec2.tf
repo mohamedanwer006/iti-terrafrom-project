@@ -37,19 +37,19 @@ resource "aws_instance" "application_instance" {
   root_block_device {
     delete_on_termination = true
   }
-  
+
 }
 
 
 resource "time_sleep" "wait" {
   create_duration = "180s"
-   depends_on = [aws_instance.bastion, aws_instance.application_instance, aws_key_pair.iti_ssh_key]
+  depends_on      = [aws_instance.bastion, aws_instance.application_instance, aws_key_pair.iti_ssh_key]
 }
 
 
 resource "null_resource" "ansible_inventory" {
   provisioner "local-exec" {
-    
+
     interpreter = ["bash", "-c"]
     command     = <<EOT
           echo "
@@ -63,28 +63,42 @@ resource "null_resource" "ansible_inventory" {
 
               private_key_file = /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem
 
-              ansible_ssh_common_args = '-o ProxyCommand="ssh -T -i /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
+              ansible_ssh_common_args = '-o ProxyCommand="ssh -i /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
           " > ./ansible/inventory
+          
+          echo "
+          Host bastion
+                  HostName ${aws_instance.bastion.public_ip}
+                  IdentityFile /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem
+                  User ubuntu
+
+          Host application
+                  HostName ${aws_instance.application_instance.private_ip}    
+                  IdentityFile /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem
+                  Port 22
+                  User ubuntu     
+                  ProxyCommand ssh -q -W %h:%p bastion
+          " > /root/.ssh/config
      EOT
   }
 
-depends_on = [
-  time_sleep.wait
-]
+  depends_on = [
+    time_sleep.wait
+  ]
 }
 
 resource "null_resource" "run_ansible" {
   provisioner "local-exec" {
-    
+
     interpreter = ["bash", "-c"]
     command     = <<EOT
            cd ./ansible && ansible-playbook --private-key ./pk.pem plays/app_vm.yaml -vvv
      EOT
   }
 
-depends_on = [
-  null_resource.ansible_inventory
-]
+  depends_on = [
+    null_resource.ansible_inventory
+  ]
 }
 
 
