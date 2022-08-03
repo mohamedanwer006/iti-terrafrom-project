@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     properties([
         buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '3')),
         disableConcurrentBuilds(), 
@@ -13,7 +13,7 @@ pipeline {
         stage('chectout') {
             steps {
                 echo '#----------------Checkout SCM------------------#'
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/iti-terrafrom-project.git'
+                git branch: 'dev', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/iti-terrafrom-project.git'
 
                 sh 'ls'
             }
