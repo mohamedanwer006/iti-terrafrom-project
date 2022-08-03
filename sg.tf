@@ -12,7 +12,7 @@ resource "aws_security_group" "bastion_sg" {
 }
 
 # inbound rules for bastion server
-resource "aws_security_group_rule" "sg_inbound_allow_ssh" {
+resource "aws_security_group_rule" "bastion_sg_inbound_allow_ssh" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
@@ -58,7 +58,7 @@ resource "aws_security_group_rule" "sg_inbound_allow_http" {
 }
 
 
-resource "aws_security_group_rule" "sg_inbound_allow_ssh" {
+resource "aws_security_group_rule" "app_sg_inbound_allow_ssh" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
