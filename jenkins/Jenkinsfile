@@ -1,11 +1,12 @@
 pipeline {
     agent any
-
-    options([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '3')),disableConcurrentBuilds(), 
-        disableResume(),parameters([choice(choices: ['apply', 'destroy'],name: 'TERAFORM_ACTION')])])
+    
+    parameters{
+        choice(choices: ['apply', 'destroy'],name: 'TERAFORM_ACTION')
+    }
 
     stages {
-
+        
         stage('chectout') {
             steps {
                 echo '#----------------Checkout SCM------------------#'
