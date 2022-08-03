@@ -36,7 +36,7 @@ pipeline {
             steps {
                
                 echo '#==================Deploy application====================#'
-                sh "docker run -d -e REDIS_HOSTNAME=iti-elasticache-cluster.lhrqtl.0001.use1.cache.amazonaws.com -e REDIS_PORT=6379 -e RDS_HOSTNAME=20220803121034733600000001.cwcbyztycuua.us-east-1.rds.amazonaws.com -e RDS_USERNAME=user1 -e RDS_PASSWORD=password -e RDS_PORT=3306 -p 3000:3000 mohameddev006/iti-node-app:latest"
+                sh "docker run --name myapp -d -e REDIS_HOSTNAME=iti-elasticache-cluster.lhrqtl.0001.use1.cache.amazonaws.com -e REDIS_PORT=6379 -e RDS_HOSTNAME=20220803121034733600000001.cwcbyztycuua.us-east-1.rds.amazonaws.com -e RDS_USERNAME=user1 -e RDS_PASSWORD=password -e RDS_PORT=3306 -p 3000:3000 mohameddev006/iti-node-app:latest"
    
             }
         }
