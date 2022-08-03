@@ -1,2 +1,4 @@
 .terraform
 .terraform.lock.hcl
+.ansible/inventory
+.ansible/pk.pm

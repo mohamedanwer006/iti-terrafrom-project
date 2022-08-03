@@ -1,0 +1,11 @@
+[application]
+10.0.2.112
+
+[application:vars]
+ansible_user = ubuntu
+
+ansible_port = 22
+
+private_key_file = /home/mohamed/Downloads/pk.pem
+
+ansible_ssh_common_args= '-o ProxyCommand="ssh -i /home/mohamed/Downloads/pk.pem -W %h:%p -q ubuntu@3.88.37.65"'

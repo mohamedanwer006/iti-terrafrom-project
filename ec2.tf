@@ -43,7 +43,7 @@ resource "aws_instance" "application_instance" {
 
 resource "time_sleep" "wait" {
   create_duration = "180s"
-  depends_on      = [aws_instance.bastion, aws_instance.application_instance, aws_key_pair.iti_ssh_key]
+  depends_on      = [aws_instance.bastion, aws_instance.application_instance]
 }
 
 
