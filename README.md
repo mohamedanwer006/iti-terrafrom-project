@@ -1,6 +1,6 @@
 Provision AWS infrastructure using terraform and jenkins 
 ====
-
+![infra](./assets/images/draw.png)
 Description
 ----
 
@@ -35,6 +35,8 @@ Infrastructure Pipeline
 
 ![alt](./assets/images/pipeline1.png)
 
+Build the infrastructure choose **apply** 
+![alt](./assets/images/infra-pipeline.png)
 
 Configure EC2 as Jenkins Slave
 ----
@@ -47,6 +49,7 @@ Application Pipeline
 ====
 Create a new pipeline for the application [link](https://github.com/mohamedanwer006/jenkins_nodejs_example/tree/rds_redis)  
 
+![alt](./assets/images/app-cicd.png)
 ### Test application 
 open browser and type the ALB url
 
@@ -54,3 +57,9 @@ open browser and type the ALB url
 
 ![alt](./assets/images/rds.png)
 
+
+Clean up
+----
+Build the pipeline a gain and choose **destroy**
+
+![alt](./assets/images/destroy.png)
