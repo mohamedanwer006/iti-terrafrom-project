@@ -26,8 +26,8 @@ resource "aws_security_group_rule" "sg_inbound_allow_outbound_traffic" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]   
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.bastion_sg.id
 }
 
@@ -73,7 +73,7 @@ resource "aws_security_group_rule" "sg_inbound_allow_all-outbound" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
-  protocol          = "tcp"
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.application_sg.id
 }
@@ -107,7 +107,7 @@ resource "aws_security_group_rule" "sg_outbound_allow_all_rds" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
-  protocol          = "tcp"
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.rds_sg.id
 }
@@ -142,7 +142,7 @@ resource "aws_security_group_rule" "sg_outbound_allow_all_redis" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
-  protocol          = "tcp"
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.redis_sg.id
 }
@@ -176,7 +176,7 @@ resource "aws_security_group_rule" "sg_outbound_allow_all_redis" {
 #   type              = "egress"
 #   from_port         = 0
 #   to_port           = 0
-#   protocol          = "tcp"
+#   protocol    = "-1"
 #   cidr_blocks       = ["0.0.0.0/0"]
 #   security_group_id = aws_security_group.alb_sg.id
 # }
