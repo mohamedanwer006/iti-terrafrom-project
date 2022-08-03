@@ -23,7 +23,7 @@ resource "aws_elasticache_subnet_group" "elasticache_subnet_group" {
 }
 
 resource "aws_elasticache_cluster" "iti_elasticache_cluster" {
-  cluster_id           = "iti_elasticache_cluster"
+  cluster_id           = "iti-elasticache-cluster"
   engine               = "redis"
   node_type            = "cache.t2.micro"
   num_cache_nodes      = 1

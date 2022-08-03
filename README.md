@@ -89,11 +89,7 @@ Host application
 
 ```
 
-
-
-
 10. create pipeline to deploy nodejs_example fro branch (rds_redis)
-
 
 
 11. add application load balancer to your terraform code to expose your nodejs app on port 80 on the load balancer
