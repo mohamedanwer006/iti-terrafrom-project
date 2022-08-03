@@ -13,13 +13,13 @@ resource "aws_db_instance" "iti_mysql_instance" {
   availability_zone = "${var.region}a"
   skip_final_snapshot  = true
   vpc_security_group_ids = [ aws_security_group.rds_sg.id ]
+  db_subnet_group_name = aws_db_subnet_group.rds-subnet-group.name
 }
 
 
 resource "aws_db_subnet_group" "rds-subnet-group" {
   name       = "rds-subnet-group"
   subnet_ids = ["${module.network.iti_private_subnet1_id}", "${module.network.iti_private_subnet2_id}"]
-
 }
 
 resource "aws_elasticache_subnet_group" "elasticache_subnet_group" {
