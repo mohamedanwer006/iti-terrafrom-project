@@ -10,6 +10,7 @@ resource "aws_db_instance" "iti_mysql_instance" {
   username             = var.username
   password             = var.password
   # parameter_group_name = var.parameter_group_name
+  allow_major_version_upgrade = true
   availability_zone = "${var.region}a"
   skip_final_snapshot  = true
   vpc_security_group_ids = [ aws_security_group.rds_sg.id ]
