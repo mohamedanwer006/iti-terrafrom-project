@@ -9,7 +9,7 @@ ec2_instance_type        = "t2.micro"
 
 # database configuration
 engine               = "mysql"
-engine_version       = "5.7"
+engine_version         = "8.0.28"
 instance_class       = "db.t2.micro"
 name                 = "mydb"
 username             = "user1"

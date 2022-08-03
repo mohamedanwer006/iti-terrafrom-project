@@ -9,38 +9,27 @@ resource "aws_db_instance" "iti_mysql_instance" {
   name                 = var.name
   username             = var.username
   password             = var.password
-  parameter_group_name = var.parameter_group_name
+  # parameter_group_name = var.parameter_group_name
+  allow_major_version_upgrade = true
   availability_zone = "${var.region}a"
   skip_final_snapshot  = true
-
+  vpc_security_group_ids = [ aws_security_group.rds_sg.id ]
+  db_subnet_group_name = aws_db_subnet_group.rds-subnet-group.name
 }
 
 
-# ---------------------- create elasticache instance ----------------------
-
-# resource "aws_elasticache_cluster" "iti_elasticache" {
-#   cluster_id            = var.name
-#   engine                = var.engine
-#   engine_version        = var.engine_version
-#   node_type             = var.instance_class
-#   num_cache_nodes       = 1
-#   port                  = 6379
-#   subnet_group_name     = aws_subnet_group.iti_elasticache_subnet_group.name
-#   security_group_ids    = [aws_security_group.iti_sg.id]
-#   tags = {
-#     Name      = var.name
-#     createdBy = "terraform"
-#   }
-# }
+resource "aws_db_subnet_group" "rds-subnet-group" {
+  name       = "rds-subnet-group"
+  subnet_ids = ["${module.network.iti_private_subnet1_id}", "${module.network.iti_private_subnet2_id}"]
+}
 
 resource "aws_elasticache_subnet_group" "elasticache_subnet_group" {
-
   name       = "iti-cache-subnets"
   subnet_ids = ["${module.network.iti_private_subnet1_id}", "${module.network.iti_private_subnet2_id}"]
 }
 
 resource "aws_elasticache_cluster" "iti_elasticache_cluster" {
-  cluster_id           = "cluster-example"
+  cluster_id           = "iti-elasticache-cluster"
   engine               = "redis"
   node_type            = "cache.t2.micro"
   num_cache_nodes      = 1
@@ -48,13 +37,6 @@ resource "aws_elasticache_cluster" "iti_elasticache_cluster" {
   engine_version       = "3.2.10"
   port                 = 6379
   subnet_group_name    = aws_elasticache_subnet_group.elasticache_subnet_group.name
-  security_group_ids = [aws_security_group.elastic_sg.id]
-}
+  security_group_ids = [aws_security_group.redis_sg.id]
 
-# create security group for elasticache
-resource "aws_security_group" "elastic_sg" {
-  name        = "iti-sg"
-  description = "Security group for iti"
-  vpc_id      = "${module.network.vpc_id}"
-  
-} 
+}

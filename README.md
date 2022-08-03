@@ -74,26 +74,27 @@ inside jenkins container
 /root/.ssh/config
 ```
 echo "
-Host bastion
-        HostName 3.94.98.16
-        IdentityFile /var/jenkins_home/.ssh/id_rsa
-        User ubuntu
+          Host bastion
+                  HostName 54.173.117.18
+                  IdentityFile /root/.ssh/pk.pem
+                  User ubuntu
 
-Host application
-        HostName 10.0.1.152     
-        IdentityFile /var/jenkins_home/.ssh/id_rsa
-        Port 22
-        User ubuntu     
-        ProxyCommand ssh -q -W %h:%p bastion
+          Host application
+                  HostName 10.0.2.13    
+                  IdentityFile /root/.ssh/pk.pem
+                  Port 22
+                  User ubuntu     
+                  ProxyCommand ssh -q -W %h:%p bastion
 " > config
 
 ```
 
+jenkins command
 
-
-
+```
+ssh -T application exec java -jar ~/bin/agent.jar
+```
 10. create pipeline to deploy nodejs_example fro branch (rds_redis)
-
 
 
 11. add application load balancer to your terraform code to expose your nodejs app on port 80 on the load balancer
@@ -103,3 +104,16 @@ Host application
 
 
 13. create documentation illustrating your steps with screenshots
+
+
+          Host bastion
+                  HostName 54.173.117.18
+                  IdentityFile /root/.ssh/pk.pem
+                  User ubuntu
+
+          Host application
+                  HostName 10.0.2.13    
+                  IdentityFile /root/.ssh/pk.pem
+                  Port 22
+                  User ubuntu     
+                  ProxyCommand ssh -q -W %h:%p bastion

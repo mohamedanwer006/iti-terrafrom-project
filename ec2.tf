@@ -3,7 +3,7 @@
 resource "aws_instance" "bastion" {
   ami                         = var.ami
   instance_type               = var.ec2_instance_type
-  vpc_security_group_ids      = [aws_security_group.iti_sg.id]
+  vpc_security_group_ids      = [aws_security_group.bastion_sg.id]
   key_name                    = aws_key_pair.iti_ssh_key.key_name
   subnet_id                   = module.network.iti_public_subnet1_id
   associate_public_ip_address = true
@@ -27,7 +27,7 @@ resource "aws_instance" "bastion" {
 resource "aws_instance" "application_instance" {
   ami                    = var.ami
   instance_type          = var.ec2_instance_type
-  vpc_security_group_ids = [aws_security_group.iti_sg.id]
+  vpc_security_group_ids = [aws_security_group.application_sg.id]
   key_name               = aws_key_pair.iti_ssh_key.key_name
   subnet_id              = module.network.iti_private_subnet1_id
   tags = {
@@ -37,19 +37,19 @@ resource "aws_instance" "application_instance" {
   root_block_device {
     delete_on_termination = true
   }
-  
+
 }
 
 
 resource "time_sleep" "wait" {
   create_duration = "180s"
-   depends_on = [aws_instance.bastion, aws_instance.application_instance, aws_key_pair.iti_ssh_key]
+  depends_on      = [aws_instance.bastion, aws_instance.application_instance]
 }
 
 
 resource "null_resource" "ansible_inventory" {
   provisioner "local-exec" {
-    
+
     interpreter = ["bash", "-c"]
     command     = <<EOT
           echo "
@@ -65,26 +65,40 @@ resource "null_resource" "ansible_inventory" {
 
               ansible_ssh_common_args = '-o ProxyCommand="ssh -i /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem -W %h:%p -q ubuntu@${aws_instance.bastion.public_ip}"'
           " > ./ansible/inventory
+          
+          echo "
+          Host bastion
+                  HostName ${aws_instance.bastion.public_ip}
+                  IdentityFile /root/.ssh/pk.pem
+                  User ubuntu
+
+          Host application
+                  HostName ${aws_instance.application_instance.private_ip}    
+                  IdentityFile /root/.ssh/pk.pem
+                  Port 22
+                  User ubuntu     
+                  ProxyCommand ssh -q -W %h:%p bastion
+          " > /root/.ssh/config
      EOT
   }
 
-depends_on = [
-  time_sleep.wait
-]
+  depends_on = [
+    time_sleep.wait
+  ]
 }
 
 # resource "null_resource" "run_ansible" {
 #   provisioner "local-exec" {
-    
+
 #     interpreter = ["bash", "-c"]
 #     command     = <<EOT
-#           cd ansible && ansible-playbook --private-key ./pk.pem plays/app_vm.yaml -vvv
+#            cd ./ansible && ansible-playbook --private-key ./pk.pem plays/app_vm.yaml -vvv
 #      EOT
 #   }
 
-# depends_on = [
-#   null_resource.ansible_inventory
-# ]
+#   depends_on = [
+#     null_resource.ansible_inventory
+#   ]
 # }
 
 

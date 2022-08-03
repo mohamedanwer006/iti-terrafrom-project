@@ -1,12 +1,16 @@
 pipeline {
     agent any
+    
+    parameters{
+        choice(choices: ['apply', 'destroy'],name: 'TERAFORM_ACTION')
+    }
 
     stages {
-
+        
         stage('chectout') {
             steps {
                 echo '#----------------Checkout SCM------------------#'
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/iti-terrafrom-project.git'
+                git branch: 'dev', changelog: false, poll: false, url: 'https://github.com/mohamedanwer006/iti-terrafrom-project.git'
 
                 sh 'ls'
             }
