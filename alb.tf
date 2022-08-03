@@ -35,29 +35,15 @@ resource "aws_lb_listener" "front_end" {
   protocol          = "HTTP"
 
   default_action {
-    type = "redirect"
-
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
-
-#----------------------- Listener Rule ------------------------------
-
-resource "aws_lb_listener_rule" "static" {
-  listener_arn = aws_lb_listener.front_end.arn
-  priority     = 100
-
-  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.tg.arn
   }
+#   default_action {
+#     type = "forward"
 
-
+#   }
 }
+
 
 
 locals {
