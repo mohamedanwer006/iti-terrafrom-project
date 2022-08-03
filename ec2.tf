@@ -69,12 +69,12 @@ resource "null_resource" "ansible_inventory" {
           echo "
           Host bastion
                   HostName ${aws_instance.bastion.public_ip}
-                  IdentityFile /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem
+                  IdentityFile /root/.ssh/pk.pem
                   User ubuntu
 
           Host application
                   HostName ${aws_instance.application_instance.private_ip}    
-                  IdentityFile /var/jenkins_home/workspace/aws_infra_pipeline/ansible/pk.pem
+                  IdentityFile /root/.ssh/pk.pem
                   Port 22
                   User ubuntu     
                   ProxyCommand ssh -q -W %h:%p bastion
